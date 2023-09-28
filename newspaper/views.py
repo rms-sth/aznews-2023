@@ -1,8 +1,15 @@
-from django.shortcuts import redirect, render
-from newspaper.models import Post, Category, Tag
-from django.views.generic import ListView, TemplateView
-from django.utils import timezone
 import datetime
+
+from django.contrib import messages
+from django.core.paginator import PageNotAnInteger, Paginator
+from django.db.models import Q
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
+from django.utils import timezone
+from django.views.generic import DetailView, ListView, TemplateView, View
+
+from newspaper.forms import CommentForm, ContactForm, NewsletterForm
+from newspaper.models import Category, Post, Tag
 
 
 class HomeView(ListView):
@@ -76,9 +83,6 @@ class PostByTagView(ListView):
         ).order_by("-published_at")
 
 
-from django.views.generic import View, DetailView
-from newspaper.forms import ContactForm
-from django.contrib import messages
 
 
 class ContactView(View):
@@ -144,7 +148,6 @@ class PostDetailView(DetailView):
         return context
 
 
-from newspaper.forms import CommentForm
 
 
 class CommentView(View):
@@ -161,10 +164,6 @@ class CommentView(View):
             "aznews/detail/detail.html",
             {"post": post, "form": form},
         )
-
-
-from django.http import JsonResponse
-from newspaper.forms import NewsletterForm
 
 
 class NewsletterView(View):
@@ -199,8 +198,7 @@ class NewsletterView(View):
             )
 
 
-from django.core.paginator import Paginator, PageNotAnInteger
-from django.db.models import Q
+
 
 
 class PostSearchView(View):
